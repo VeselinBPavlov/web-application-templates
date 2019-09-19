@@ -24,7 +24,7 @@ Follow these steps to get your development environment set up:
      npm start
      ```
   5. Launch in your browser on localhost:3000.
-  6. There is woring Identity, Login, Logout, Register and Admin user with username: admin@abv.bg and password: 123.
+  6. There is working Identity, Login, Logout, Register and Admin user with username: admin@abv.bg and password: 123.
 
 ## Technologies
 * Node.js
