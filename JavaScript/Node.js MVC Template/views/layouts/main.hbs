@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Node.js Tempalte</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<body>
+    <div>
+        <div id="container">
+            <header>
+                <a href="/">Home</a>
+                {{#if currentUser}}
+                      <span>Welcome, {{email}}!</span>
+                      <a href="/logout">[Logout]</a>
+                {{else}}
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
+                {{/if}}
+            </header>
+            <main>
+                <h1>Welcome Node.js Template!</h1>
+                   {{#if globalError}}
+                        <span>{{globalError}}</span> 
+                   {{/if}} 
+                  {{{body}}}
+            </main>
+            <footer>
+                Node.js Template &copy; 2019
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>
