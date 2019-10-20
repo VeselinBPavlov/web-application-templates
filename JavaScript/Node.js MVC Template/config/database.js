@@ -6,7 +6,8 @@ const User = require('../models/User');
 
 module.exports = config => {
     mongoose.connect(config.dbPath, {
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     });      
     mongoose.set('useCreateIndex', true)
     const db = mongoose.connection;

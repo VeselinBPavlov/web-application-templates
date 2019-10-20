@@ -26,7 +26,7 @@ module.exports = app => {
     app.use((req, res, next) => {
         if (req.user) {
             res.locals.currentUser = req.user;
-            res.locals.email = req.user.email;
+            res.locals.username = req.user.username;
             if (req.user.roles) {
                 res.locals.isAdmin = req.user.roles.indexOf('Admin') > - 1;
             }

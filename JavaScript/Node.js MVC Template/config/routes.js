@@ -1,14 +1,14 @@
 const controllers = require('../controllers');
-const restrictedPages = require('./auth');
+const auth = require('./auth');
 
 module.exports = app => {
     app.get('/', controllers.home.index);
     
-    app.get('/register', restrictedPages.isAnonymous, controllers.user.registerGet);
-    app.post('/register', restrictedPages.isAnonymous, controllers.user.registerPost);
-    app.get('/logout', restrictedPages.isAuthed, controllers.user.logout);
-    app.get('/login', restrictedPages.isAnonymous, controllers.user.loginGet);
-    app.post('/login', restrictedPages.isAnonymous, controllers.user.loginPost);
+    app.get('/register', auth.isAnonymous, controllers.user.get.register);
+    app.post('/register', auth.isAnonymous, controllers.user.post.register);
+    app.get('/login', auth.isAnonymous, controllers.user.get.login);
+    app.post('/login', auth.isAnonymous, controllers.user.post.login);
+    app.get('/logout', auth.isAuthed, controllers.user.get.logout);
 
     app.all('*', (req, res) => {
         res.status(404);
