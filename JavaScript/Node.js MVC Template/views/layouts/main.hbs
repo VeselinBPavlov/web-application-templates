@@ -10,26 +10,13 @@
 <body>
     <div>
         <div id="container">
-            <header>
-                <a href="/">Home</a>
-                {{#if currentUser}}
-                      <span>Welcome, {{username}}!</span>
-                      <a href="/logout">[Logout]</a>
-                {{else}}
-                    <a href="/login">Login</a>
-                    <a href="/register">Register</a>
-                {{/if}}
-            </header>
+            {{> header}}
             <main>
                 <h1>Welcome Node.js Template!</h1>
-                   {{#if globalError}}
-                        <span>{{globalError}}</span> 
-                   {{/if}} 
-                  {{{body}}}
+                   {{> error }}
+                  {{{ body }}}
             </main>
-            <footer>
-                Node.js Template &copy; 2019
-            </footer>
+            {{> footer}}
         </div>
     </div>
 </body>

@@ -34,8 +34,8 @@ module.exports = {
                 .then(user => {
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            console.log(e);
-                            res.locals.globalError = e;
+                            console.log(err);
+                            res.locals.globalError = err;
                             res.render('users/register');
                         } else {
                             res.redirect('/');

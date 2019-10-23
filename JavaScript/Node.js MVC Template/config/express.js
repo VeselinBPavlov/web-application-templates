@@ -9,6 +9,8 @@ const passport = require('passport');
 hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 module.exports = app => {
     app.engine('.hbs', handlebars({
+        layoutsDir: 'views/layouts',
+        partialsDir: 'views/partials',
         defaultLayout: 'main',
         extname: '.hbs'
     }));
@@ -25,11 +27,11 @@ module.exports = app => {
 
     app.use((req, res, next) => {
         if (req.user) {
-            res.locals.currentUser = req.user;
-            res.locals.username = req.user.username;
-            if (req.user.roles) {
-                res.locals.isAdmin = req.user.roles.indexOf('Admin') > - 1;
-            }
+            res.locals.currentUser = {
+                username: req.user.username,
+                userId: req.user.id,
+                isAdmin: req.user.roles.indexOf('Admin') > -1
+            };
         }
         next();
     });
