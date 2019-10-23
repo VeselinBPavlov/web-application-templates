@@ -1,5 +1,6 @@
 const encryption = require('../util/encryption');
 const userService = require('../services/user-service');
+const errorService = require('../services/error-service');
 
 module.exports = {
     get: {
@@ -21,8 +22,8 @@ module.exports = {
         register: (req, res) => {
             const { username, password, repeatPassword} = req.body;
             if (password !== repeatPassword) {
-                res.locals.globalError = 'Passwords must match!';
-                res.render('users/register');
+                const err = 'Password did not match!';
+                errorService.handleError(res, err, 'users/register'); 
                 return;
             }
             
@@ -34,18 +35,12 @@ module.exports = {
                 .then(user => {
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            console.log(err);
-                            res.locals.globalError = err;
-                            res.render('users/register');
+                            errorService.handleError(res, err, 'users/register'); 
                         } else {
                             res.redirect('/');
                         }
                     });
-                }).catch((err) => {
-                    console.log(err);
-                    res.locals.globalError = err;
-                    res.render('users/register');
-                });  
+                }).catch(err => errorService.handleError(res, err, 'users/register'));  
         },
 
         login: (req, res) => {
@@ -56,25 +51,17 @@ module.exports = {
                 .then(user => {
                     if (!user || !user.authenticate(password)) {
                         const err = 'Invalid user data!'
-                        console.log(err);
-                        res.locals.globalError = err;
-                        res.render('users/register');
+                        errorService.handleError(res, err, 'users/register'); 
                         return;
                     }
                     req.logIn(user, (err, user) => {
                         if (err) {
-                            console.log(err);
-                            res.locals.globalError = err;
-                            res.render('users/register');
+                            errorService.handleError(res, err, 'users/register'); 
                         } else {
                             res.redirect('/');
                         }
                     });
-                }).catch((err) => {
-                    console.log(err);
-                    res.locals.globalError = err;
-                    res.render('users/register');
-                });  
+                }).catch(err => errorService.handleError(res, err, 'users/register'));  
         }
     }    
 };
