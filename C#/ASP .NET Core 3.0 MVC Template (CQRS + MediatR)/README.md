@@ -1,4 +1,4 @@
-# ASP .NET CORE Application Template
+# ASP .NET Core MVC Application Template (CQRS + MediatR)
 
 This project is a sample template built using ASP.NET Core and Entity Framework Core. It follow the CQRS + MediatR pattern and clean architecture principles.
 
