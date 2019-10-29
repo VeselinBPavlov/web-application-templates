@@ -1,26 +1,43 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable object-shorthand */
+/* eslint-disable func-names */
+/* eslint-disable consistent-return */
+/* eslint-disable function-paren-newline */
+/* eslint-disable comma-style */
+/* eslint-disable eol-last */
+/* eslint-disable semi */
+/* eslint-disable arrow-parens */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-undef */
+/* eslint-disable indent */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable linebreak-style */
+
 const mongoose = require('mongoose');
 const encryption = require('../util/encryption');
-const Schema = mongoose.Schema;
+
+const { Types } = mongoose.Schema;
 
 const userSchema = new Schema({
   email: {
-    type: Schema.Types.String,
+    type: Types.String,
     required: true
   },
   hashedPassword: {
-    type: Schema.Types.String,
+    type: Types.String,
     required: true
   },
   name: {
-    type: Schema.Types.String,
+    type: Types.String,
     required: true
   },
   salt: {
-    type: Schema.Types.String,
+    type: Types.String,
     required: true
   },
   posts: [
-    { type: Schema.Types.ObjectId, ref: 'Post' }
+    { type: Types.ObjectId, ref: 'Post' }
   ]
 });
 

@@ -1,3 +1,16 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable function-paren-newline */
+/* eslint-disable comma-style */
+/* eslint-disable eol-last */
+/* eslint-disable semi */
+/* eslint-disable arrow-parens */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-undef */
+/* eslint-disable indent */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable linebreak-style */
+
 const { validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -44,7 +57,7 @@ module.exports = {
   signIn: (req, res) => {
     const { email, password } = req.body;
 
-    User.findOne({ email: email })
+    User.findOne({ email })
       .then((user) => {
         if (!user) {
           const error = new Error('A user with this email could not be found');
@@ -52,7 +65,7 @@ module.exports = {
           throw error;
         }
 
-        if(!user.authenticate(password)) {
+        if (!user.authenticate(password)) {
           const error = new Error('A user with this email could not be found');
           error.statusCode = 401;
           throw error;
