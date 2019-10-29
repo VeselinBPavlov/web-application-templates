@@ -35,7 +35,6 @@ Follow these steps to get your development environment set up:
      dotnet run
      ```
   5. Launch in your browser.
-  6. First registered user will be with role "Administrator". Any other user will be with role "User".
 
 ## Technologies
 * .NET Core 3.0
