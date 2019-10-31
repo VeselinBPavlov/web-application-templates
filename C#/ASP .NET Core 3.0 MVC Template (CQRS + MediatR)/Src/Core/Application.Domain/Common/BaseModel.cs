@@ -7,7 +7,6 @@
 
     public abstract class BaseModel<TKey> : IAuditableEntity
     {
-        [Key]
         public TKey Id { get; set; }
 
         public string CreatedBy { get; set; }

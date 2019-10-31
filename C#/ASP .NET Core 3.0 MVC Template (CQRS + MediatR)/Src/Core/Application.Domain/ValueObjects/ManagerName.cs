@@ -18,25 +18,25 @@
 
         public static ManagerName For(string accountString)
         {
-            var manager = new ManagerName();
+            var managerName = new ManagerName();
 
             try
             {
                 var index = accountString.IndexOf(" ", StringComparison.Ordinal);
-                manager.FirstName = accountString.Substring(0, index);
-                manager.LastName = accountString.Substring(index + 1);
+                managerName.FirstName = accountString.Substring(0, index);
+                managerName.LastName = accountString.Substring(index + 1);
             }
             catch (ArgumentException)
             {
                 throw new ManagerNameInvalidException(new ArgumentException());
             }
 
-            return manager;
+            return managerName;
         }
 
-        public static implicit operator string(ManagerName manager)
+        public static implicit operator string(ManagerName managerName)
         {
-            return manager.ToString();
+            return managerName.ToString();
         }
 
         public static explicit operator ManagerName(string managerString)

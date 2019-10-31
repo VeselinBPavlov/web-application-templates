@@ -10,7 +10,7 @@
         {
             if (a is null && b is null)
             {
-                return true;
+                return true; 
             }
 
             if (a is null || b is null)
