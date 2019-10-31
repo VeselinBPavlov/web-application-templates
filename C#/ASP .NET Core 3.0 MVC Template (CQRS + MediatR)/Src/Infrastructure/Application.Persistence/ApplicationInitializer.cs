@@ -8,7 +8,7 @@ namespace Application.Persistence
 
     public class ApplicationInitializer
     {
-         public static void Initialize(ApplicationDbContext context)
+        public static void Initialize(ApplicationDbContext context)
         {
             var initializer = new ApplicationInitializer();
             initializer.SeedEverything(context);
@@ -18,7 +18,7 @@ namespace Application.Persistence
         {
             context.Database.EnsureCreated();
 
-            if (context.Roles.Any())
+            if (context.Managers.Any())
             {
                 return; // Db has been seeded
             }

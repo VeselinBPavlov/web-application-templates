@@ -5,9 +5,9 @@
 
     using Interfaces;
 
-    public abstract class BaseModel<TKey> : IAuditableEntity
+    public abstract class BaseModel : IAuditableEntity
     {
-        public TKey Id { get; set; }
+        public string Id { get; set; }
 
         public string CreatedBy { get; set; }
 

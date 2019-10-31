@@ -1,3 +1,4 @@
+using Application.Infrastructure;
 namespace Application.WebApp
 {
     using Microsoft.AspNetCore.Builder;
@@ -54,13 +55,9 @@ namespace Application.WebApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-            });
+            app.UseMvcWithAreas();
+
+            app.SeedData();
         }
     }
 }
