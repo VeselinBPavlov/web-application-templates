@@ -22,18 +22,18 @@
 
         public async Task<Unit> Handle(DeleteManagerCommand request, CancellationToken cancellationToken)
         {
-            var Manager = await this.context.Managers
+            var manager = await this.context.Managers
                 .FindAsync(request.Id);
 
-            if (Manager == null || Manager.IsDeleted == true)
+            if (manager == null || manager.IsDeleted == true)
             {
                 throw new NotFoundException(Entity, request.Id);
             }
 
-            Manager.DeletedOn = DateTime.UtcNow;
-            Manager.IsDeleted = true;
+            manager.DeletedOn = DateTime.UtcNow;
+            manager.IsDeleted = true;
 
-            this.context.Managers.Update(Manager);
+            this.context.Managers.Update(manager);
             await this.context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

@@ -9,9 +9,9 @@ namespace Template.Application.Managers.Queries.GetManagerById
     {
         public string Id { get; set; }
 
-        public string ManagerFirstName { get; set; }
+        public string FirstName { get; set; }
 
-        public string ManagerLastName { get; set; }
+        public string LastName { get; set; }
 
         public string ReceptionDay { get; set; }
 
@@ -22,8 +22,8 @@ namespace Template.Application.Managers.Queries.GetManagerById
                 return manager => new ManagerViewModel
                 {
                     Id = manager.Id,
-                    ManagerFirstName = manager.FirstName,
-                    ManagerLastName = manager.LastName,
+                    FirstName = manager.FirstName,
+                    LastName = manager.LastName,
                     ReceptionDay = manager.ReceptionDay.ToString()
                 };
             }

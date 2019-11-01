@@ -1,22 +1,21 @@
 ﻿namespace Template.WebApp.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using System.Diagnostics;
-    using Template.WebApp.Models;
 
-    public class HomeController : Controller
+    using Models;
+    using Template.Application.Managers.Queries.GetAllManagers;
+    using System.Threading.Tasks;
+
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        [HttpGet]
+        [Route("/")]
+        [Route("Home/Index")]
+        public async Task<IActionResult> Index()
         {
-            this.logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            var result = await Mediator.Send(new GetAllManagersListQuery());
+            return this.View(result);
         }
 
         public IActionResult Privacy()

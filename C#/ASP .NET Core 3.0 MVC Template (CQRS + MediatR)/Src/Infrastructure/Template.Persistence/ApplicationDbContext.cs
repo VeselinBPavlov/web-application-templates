@@ -10,13 +10,16 @@ namespace Template.Persistence
 
     public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
     {
+        public DbSet<Manager> Managers { get; set; }
+
+        public DbSet<TemplateUser> TemplateUsers { get; set; }
+
+        public DbSet<TemplateRole> TemplateRoles { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-
-        public DbSet<Manager> Managers { get; set; }
-        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,12 +1,16 @@
 ﻿namespace Template.Domain.Entities.Common
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
 
     using Interfaces;
 
     public abstract class BaseModel : IAuditableEntity
     {
+        public BaseModel()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
+
         public string Id { get; set; }
 
         public string CreatedBy { get; set; }

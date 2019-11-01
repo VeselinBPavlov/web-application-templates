@@ -1,8 +1,36 @@
-﻿@{
+﻿@using Template.Application.Managers.Queries.GetAllManagers;
+@model ManagersListViewModel;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Reception Day</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>            
+            @for (var i = 0; i < Model.Managers.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@(i + 1)</th>
+                    <td>@Model.Managers[i].FirstName</td>
+                    <td>@Model.Managers[i].LastName</td>
+                    <td>@Model.Managers[i].ReceptionDay</td>
+                    <td>
+                        <a asp-controller="Manager" asp-action="Edit" asp-route-managerId="@Model.Managers[i].Id" class="btn btn-primary" role="button">Edit</a> <a asp-controller="Manager" asp-action="Delete" asp-route-managerId="@Model.Managers[i].Id" class="btn btn-danger" role="button">Delete</a></td>
+                </tr>
+            }            
+        </tbody>
+    </table>
 </div>

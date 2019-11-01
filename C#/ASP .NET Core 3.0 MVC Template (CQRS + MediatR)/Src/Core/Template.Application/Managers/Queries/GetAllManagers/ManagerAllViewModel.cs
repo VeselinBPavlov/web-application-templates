@@ -7,15 +7,13 @@ namespace Template.Application.Managers.Queries.GetAllManagers
 
     public class ManagerAllViewModel : IHaveCustomMapping
     {
-         public int Id { get; set; }
+        public string Id { get; set; }
 
-        public string CompanyName { get; set; }
+        public string FirstName { get; set; }
 
-        public string VatNumber { get; set; }
+        public string LastName { get; set; }
 
-        public string ManagerNames { get; set; }
-
-        public string Phone { get; set; }
+        public string ReceptionDay { get; set; }
 
         public void CreateMappings(Profile configuration)
         {

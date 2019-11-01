@@ -26,7 +26,7 @@ namespace Template.Application.Managers.Queries.GetAllManagers
         {
             return new ManagersListViewModel
             {
-                Managers = await this.context.Managers.Where(c => c.IsDeleted != true).ProjectTo<ManagerAllViewModel>(this.mapper.ConfigurationProvider).ToListAsync(cancellationToken)
+                Managers = await this.context.Managers.Where(m => m.IsDeleted != true).OrderByDescending(m => m.CreatedOn).ProjectTo<ManagerAllViewModel>(this.mapper.ConfigurationProvider).ToListAsync(cancellationToken)
             };
         }
     }
