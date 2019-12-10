@@ -6,7 +6,7 @@ This project is a sample template built using ASP.NET Core and Entity Framework 
 1. Domain Layer - contains all entities, enums, exceptions, types and logic specific to the domain. The Entity Framework related classes are abstract, and should be considered in the same light as .NET Core. For testing, use an InMemory provider.
 2. Application Layer - contains all application logic. It is dependent on the domain layer, but has no dependencies on any other layer or project. This layer defines interfaces that are implemented by outside layers.
 3. Persistence Layer - contains database context, all configurations, migrations and data seed. It depends only on the application layer.
-4. Presentation Layer - contains all presentation logic. For Admin panel is a Single Page Application working with ASP.NET WebAPI and jQuery. There is scaffolded indentity works with Razor Pages. The rest of the website is classic multipage MVC application. Presentation layer depends only on application layer.
+4. Presentation Layer - contains all presentation logic. This website is classic multipage MVC application. Presentation layer depends only on application layer.
 5. Common Layer - contains all cross-cutting concerns.
 
 ## Getting Started
