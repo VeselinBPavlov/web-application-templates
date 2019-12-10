@@ -16,7 +16,7 @@ Use these instructions to get the project up and running.
 You will need the following tools:
 
 * [Visual Studio Code or 2019](https://www.visualstudio.com/downloads/)
-* [.NET Core SDK 3.0](https://www.microsoft.com/net/download/dotnet-core/3.0)
+* [.NET Core SDK 3.1](https://www.microsoft.com/net/download/dotnet-core/3.1)
 
 ### Setup
 Follow these steps to get your development environment set up:
@@ -37,9 +37,9 @@ Follow these steps to get your development environment set up:
   5. Launch in your browser.
 
 ## Technologies
-* .NET Core 3.0
-* ASP.NET Core 3.0
-* Entity Framework Core 3.0
+* .NET Core 3.1
+* ASP.NET Core 3.1
+* Entity Framework Core 3.1
 * xUnit, MyTested.AspNetCore.Mvc
 * CQRS, MediatR
 
