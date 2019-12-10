@@ -30,7 +30,7 @@ Follow these steps to get your development environment set up:
      ```
      dotnet build
      ``` 
-  4. In the `Studio.User.WebUI` directory, launch the back end by running:
+  4. In the `Template.WebApp` directory, launch the back end by running:
      ```
      dotnet run
      ```
