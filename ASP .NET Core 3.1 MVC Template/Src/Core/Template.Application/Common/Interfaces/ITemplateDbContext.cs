@@ -11,7 +11,7 @@ namespace Template.Application.Common.Interfaces
     {
          DbSet<Manager> Managers { get; set; }
 
-        DbSet<TemplateUser> TempalteUsers { get; set; }
+        DbSet<TemplateUser> TemplateUsers { get; set; }
 
         DbSet<TemplateRole> TemplateRoles { get; set; }
 
