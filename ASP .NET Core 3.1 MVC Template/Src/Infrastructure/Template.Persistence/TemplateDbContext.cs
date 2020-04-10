@@ -14,7 +14,7 @@ namespace Template.Persistence
 
         public DbSet<TemplateRole> TemplateRoles { get; set; }
 
-        public DbSet<TemplateUser> TempalteUsers { get; set; }
+        public DbSet<TemplateUser> TemplateUsers { get; set; }
 
         public TemplateDbContext(DbContextOptions<TemplateDbContext> options)
             : base(options)
