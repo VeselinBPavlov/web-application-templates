@@ -4,7 +4,6 @@
 
 @{
     ViewData["Title"] = "Todo";
-    var items = Model.Lists[0].Items;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -12,6 +11,6 @@
 <p>This is a complex todo list component.</p>
 
 <div class="row">
-    <vc:todo-lists list="@Model.Lists"></vc:todo-lists>
-    <vc:todo-items list="@items"></vc:todo-items>
+    <vc:todo-lists model="@Model"></vc:todo-lists>
+    <vc:todo-items model="@Model"></vc:todo-items>
 </div>

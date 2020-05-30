@@ -16,6 +16,8 @@ namespace Template.Domain.Entities
 
         public string Colour { get; set; }
 
+        public bool IsSelected { get; set; }
+
         public IList<TodoItem> Items { get; set; }
     }
 }

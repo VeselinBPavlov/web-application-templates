@@ -5,6 +5,7 @@ using Template.Application.TodoItems.Commands.UpdateTodoItemDetail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Template.Application.TodoItems.Queries.GetSelectedListItems;
 
 namespace Template.WebUI.Controllers
 {
@@ -43,6 +44,14 @@ namespace Template.WebUI.Controllers
             await Mediator.Send(command);
 
             return NoContent();
+        }
+
+
+        public async Task<ActionResult> Get(int id)
+        {
+            await Mediator.Send(new GetSelectedListItemsQuery() { Id = id });
+
+            return this.Redirect("/Todo");
         }
 
         [HttpPost]

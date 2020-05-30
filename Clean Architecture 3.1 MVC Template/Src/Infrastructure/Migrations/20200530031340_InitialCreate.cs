@@ -92,7 +92,8 @@ namespace Template.Infrastructure.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModified = table.Column<DateTime>(nullable: true),
                     Title = table.Column<string>(maxLength: 200, nullable: false),
-                    Colour = table.Column<string>(nullable: true)
+                    Colour = table.Column<string>(nullable: true),
+                    IsSelected = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -108,3 +108,9 @@ body {
 .modal-footer {
     display: block;
 }
+
+.list-item-active {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}

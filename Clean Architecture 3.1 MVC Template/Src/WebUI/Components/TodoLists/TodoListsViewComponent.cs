@@ -6,9 +6,9 @@ namespace WebUI.Components.TodoLists
 {
     public class TodoListsViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(IList<TodoListDto> list)
+        public IViewComponentResult Invoke(TodosVm model)
         {
-            return View(list);
+            return View(model);
         }
     }
 }

@@ -10,7 +10,7 @@ using Template.Infrastructure.Persistence;
 namespace Template.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200527040240_Initial-Create")]
+    [Migration("20200530031340_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -305,6 +305,9 @@ namespace Template.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");

@@ -304,6 +304,9 @@ namespace Template.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 

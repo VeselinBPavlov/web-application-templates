@@ -15,6 +15,8 @@ namespace Template.Application.TodoLists.Queries.GetTodos
 
         public string Title { get; set; }
 
+        public bool IsSelected { get; set; }
+
         public IList<TodoItemDto> Items { get; set; }
     }
 }

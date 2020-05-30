@@ -41,6 +41,20 @@ namespace Template.Application.TodoLists.Commands.DeleteTodoList
             }
 
             _context.TodoLists.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            bool isAnySelected = _context.TodoLists.Any(l => l.IsSelected == true && l.Id != request.Id);
+
+            if (!isAnySelected)
+            {
+                var list = _context.TodoLists.FirstOrDefault(l => l.Id != request.Id);
+
+                if (list != null)
+                {
+                    list.IsSelected = true;
+                    _context.TodoLists.Update(list);
+                }
+            }
 
             await _context.SaveChangesAsync(cancellationToken);
 

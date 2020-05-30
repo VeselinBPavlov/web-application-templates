@@ -9,7 +9,8 @@ namespace WebUI.Controllers
     {
         public async Task<ActionResult<TodosVm>> Index()
         {
-            return View(await Mediator.Send(new GetTodosQuery()));
+            var result = await Mediator.Send(new GetTodosQuery());
+            return View(result);
         }
     }
 }
