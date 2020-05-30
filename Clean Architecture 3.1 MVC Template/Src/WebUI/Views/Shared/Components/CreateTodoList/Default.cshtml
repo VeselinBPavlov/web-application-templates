@@ -1,0 +1,10 @@
+﻿@using Template.Application.TodoLists.Commands.CreateTodoList;
+
+@model CreateTodoListCommand;
+
+<form class="form-inline" method="post" asp-controller="TodoLists" asp-action="Create">
+    <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" asp-for="Title" placeholder="New List">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Add List</button>
+</form>

@@ -1,0 +1,17 @@
+﻿@using Template.Application.TodoLists.Queries.GetTodos;
+
+@model TodosVm;
+
+@{
+    ViewData["Title"] = "Todo";
+    var items = Model.Lists[0].Items;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>This is a complex todo list component.</p>
+
+<div class="row">
+    <vc:todo-lists list="@Model.Lists"></vc:todo-lists>
+    <vc:todo-items list="@items"></vc:todo-items>
+</div>
