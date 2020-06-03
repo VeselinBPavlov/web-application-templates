@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Template.Infrastructure.Identity;
 using Template.Infrastructure.Persistence;
 
-namespace WebUI.Server
+namespace Template.WebUI.Server
 {
     public static class Program
     {

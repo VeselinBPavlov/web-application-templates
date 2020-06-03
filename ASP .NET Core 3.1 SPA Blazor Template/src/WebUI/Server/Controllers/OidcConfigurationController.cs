@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace WebUI.Server.Controllers
+namespace Template.WebUI.Server.Controllers
 {
     public class OidcConfigurationController : Controller
     {

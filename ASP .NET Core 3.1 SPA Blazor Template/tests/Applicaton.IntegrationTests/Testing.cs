@@ -13,7 +13,7 @@ using Respawn;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using WebUI.Server;
+using Template.WebUI.Server;
 
 [SetUpFixture]
 public class Testing
@@ -39,7 +39,7 @@ public class Testing
 
         services.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
             w.EnvironmentName == "Development" &&
-            w.ApplicationName == "Template.WebUI"));
+            w.ApplicationName == "WebUI.Server"));
 
         services.AddLogging();
 

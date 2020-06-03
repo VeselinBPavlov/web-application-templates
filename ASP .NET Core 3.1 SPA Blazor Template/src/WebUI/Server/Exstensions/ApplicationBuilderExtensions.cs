@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace WebUI.Server.Exstensions
+namespace Template.WebUI.Server.Exstensions
 {
     public static class ApplicationBuilderExtensions
     {

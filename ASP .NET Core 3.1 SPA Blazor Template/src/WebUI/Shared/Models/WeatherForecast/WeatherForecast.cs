@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebUI.Shared.Models.WeatherForecast
+namespace Template.WebUI.Shared.Models.WeatherForecast
 {
     public class WeatherForecast
     {

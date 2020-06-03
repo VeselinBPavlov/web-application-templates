@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Template.Application.Common.Exceptions;
 
-namespace WebUI.Server.Filters
+namespace Template.WebUI.Server.Filters
 {
     public class ApiExceptionFilter : ExceptionFilterAttribute
     {

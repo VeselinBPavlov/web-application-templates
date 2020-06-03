@@ -9,13 +9,13 @@ using Template.Application;
 using Template.Application.Common.Interfaces;
 using Template.Infrastructure;
 using Template.Infrastructure.Persistence;
-using WebUI.Server.Filters;
-using WebUI.Server.Services;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using WebUI.Server.Exstensions;
+using Template.WebUI.Server.Exstensions;
+using Template.WebUI.Server.Filters;
+using Template.WebUI.Server.Services;
 
-namespace WebUI.Server
+namespace Template.WebUI.Server
 {
     public class Startup
     {
@@ -25,7 +25,7 @@ namespace WebUI.Server
         }
 
         public IConfiguration Configuration { get; }
-              
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
@@ -35,7 +35,7 @@ namespace WebUI.Server
 
             services.AddHealthChecks()
                 .AddDbContextCheck<ApplicationDbContext>();
-            
+
             services.AddControllersWithViews(options =>
                 options.Filters.Add(new ApiExceptionFilter()));
 

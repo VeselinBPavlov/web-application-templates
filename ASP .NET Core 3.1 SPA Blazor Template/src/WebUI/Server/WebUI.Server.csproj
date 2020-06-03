@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>WebUI.Server-5111D403-FB61-46E4-A50E-CF60441C8E61</UserSecretsId>
+    <RootNamespace>Template.WebUI.Server</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

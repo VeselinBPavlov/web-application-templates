@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using WebUI.Shared.Models.WeatherForecast;
+using Template.WebUI.Shared.Models.WeatherForecast;
 
 namespace Template.Application.WeatherForecasts.Queries.GetWeatherForecasts
 {

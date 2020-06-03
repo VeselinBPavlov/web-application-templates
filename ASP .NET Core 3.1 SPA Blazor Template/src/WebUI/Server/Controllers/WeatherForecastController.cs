@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Template.Application.WeatherForecasts.Queries.GetWeatherForecasts;
-using WebUI.Shared.Models.WeatherForecast;
+using Template.WebUI.Shared.Models.WeatherForecast;
 
-namespace WebUI.Server.Controllers
+namespace Template.WebUI.Server.Controllers
 {
+    [Authorize]
     public class WeatherForecastController : ApiController
     {
         [HttpGet]

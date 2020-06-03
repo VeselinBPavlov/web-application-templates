@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using Template.Application.Common.Interfaces;
 
-namespace WebUI.Server.Services
+namespace Template.WebUI.Server.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
