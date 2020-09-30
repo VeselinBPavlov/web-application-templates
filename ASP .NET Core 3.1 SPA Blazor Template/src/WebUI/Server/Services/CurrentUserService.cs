@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Template.Application.Common.Interfaces;
+using Template.WebUI.Shared.Common.Interfaces;
 
 namespace Template.WebUI.Server.Services
 {

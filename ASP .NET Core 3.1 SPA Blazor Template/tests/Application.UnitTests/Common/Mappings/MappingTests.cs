@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Template.Application.Common.Mappings;
-using Template.Application.TodoLists.Queries.GetTodos;
-using Template.Domain.Entities;
 using NUnit.Framework;
 using System;
+using Template.Domain.Entities;
+using Template.WebUI.Shared.Common.Mappings;
+using Template.WebUI.Shared.TodoLists.Queries.GetTodos;
 
 namespace Template.Application.UnitTests.Common.Mappings
 {

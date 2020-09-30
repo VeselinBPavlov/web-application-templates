@@ -1,10 +1,10 @@
-﻿using Template.Application.Common.Exceptions;
-using Template.Application.TodoLists.Commands.CreateTodoList;
+﻿using Template.WebUI.Shared.Common.Exceptions;
 using Template.Domain.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using Template.WebUI.Shared.TodoLists.Commands.CreateTodoList;
 
 namespace Template.Application.IntegrationTests.TodoLists.Commands
 {

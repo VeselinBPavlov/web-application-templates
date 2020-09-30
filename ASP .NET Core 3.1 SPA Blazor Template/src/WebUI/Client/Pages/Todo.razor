@@ -1,0 +1,63 @@
+﻿@page "/todo"
+
+<h3>Todo</h3>
+<p>This is a complex todo list component.</p>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="clearfix">
+            <h2 class="float-left">Lists</h2>
+            <button class="btn btn-default float-right" title="Add List...">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="clearfix">
+                    <div class="float-left">
+                        list.title
+                    </div>
+                    <div class="float-right text-right">
+                        <span class="badge badge-light">remainingItems(list)</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-8">
+        <div class="clearfix">
+            <h2 class="float-left">selectedList.title</h2>
+            <button id="listOptions" class="btn btn-default float-right" title="List Options...">
+                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+            </button>
+        </div>
+        <ul id="todo-items" class="list-group mb-2">
+            <li class="list-group-item">
+                <div class="d-flex">
+                    <div class="todo-item-checkbox">
+                        <input type="checkbox" />
+                    </div>
+                    <div class="flex-fill">
+                        <input id="itemTitle' + i" type="text"
+                               class="form-control item-input-control" autofocus="autofocus" />
+                        <div class="todo-item-title form-control item-input-control">
+                            <span>item.title</span>
+                        </div>
+                    </div>
+                    <div class="todo-item-commands">
+                        <button class="btn btn-default btn-xs" role="button">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-default">Add Item...</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+@code {
+
+}

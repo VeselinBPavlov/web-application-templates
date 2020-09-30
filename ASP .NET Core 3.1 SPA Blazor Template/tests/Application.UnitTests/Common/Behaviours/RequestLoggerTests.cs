@@ -1,6 +1,6 @@
-﻿using Template.Application.Common.Behaviours;
-using Template.Application.Common.Interfaces;
-using Template.Application.TodoItems.Commands.CreateTodoItem;
+﻿using Template.WebUI.Shared.Common.Behaviours;
+using Template.WebUI.Shared.Common.Interfaces;
+using Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;

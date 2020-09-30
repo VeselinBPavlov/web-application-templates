@@ -1,5 +1,4 @@
-﻿using Template.Application.Common.Interfaces;
-using Template.Domain.Common;
+﻿using Template.Domain.Common;
 using Template.Domain.Entities;
 using Template.Infrastructure.Identity;
 using IdentityServer4.EntityFramework.Options;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Template.WebUI.Shared.Common.Interfaces;
 
 namespace Template.Infrastructure.Persistence
 {

@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
-using Template.Application;
-using Template.Application.Common.Interfaces;
 using Template.Infrastructure;
 using Template.Infrastructure.Persistence;
 using NSwag;
@@ -14,6 +12,8 @@ using NSwag.Generation.Processors.Security;
 using Template.WebUI.Server.Exstensions;
 using Template.WebUI.Server.Filters;
 using Template.WebUI.Server.Services;
+using Template.WebUI.Shared;
+using Template.WebUI.Shared.Common.Interfaces;
 
 namespace Template.WebUI.Server
 {

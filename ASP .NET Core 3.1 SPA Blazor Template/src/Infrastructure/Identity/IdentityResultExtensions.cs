@@ -1,6 +1,6 @@
-﻿using Template.Application.Common.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using Template.WebUI.Shared.Common.Models;
 
 namespace Template.Infrastructure.Identity
 {

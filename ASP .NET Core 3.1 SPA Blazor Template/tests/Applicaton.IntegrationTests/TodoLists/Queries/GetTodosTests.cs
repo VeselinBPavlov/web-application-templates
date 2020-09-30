@@ -1,9 +1,9 @@
-﻿using Template.Application.TodoLists.Queries.GetTodos;
-using Template.Domain.Entities;
+﻿using Template.Domain.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
+using Template.WebUI.Shared.TodoLists.Queries.GetTodos;
 
 namespace Template.Application.IntegrationTests.TodoLists.Queries
 {

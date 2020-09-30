@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Template.Application.WeatherForecasts.Queries.GetWeatherForecasts;
-using Template.WebUI.Shared.Models.WeatherForecast;
+using Template.WebUI.Shared.WeatherForecasts.Queries.GetWeatherForecasts;
 
 namespace Template.WebUI.Server.Controllers
 {

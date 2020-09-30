@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
-using Template.Application.Common.Exceptions;
+using Template.WebUI.Shared.Common.Exceptions;
 
 namespace Template.WebUI.Server.Filters
 {

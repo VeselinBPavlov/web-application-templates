@@ -1,5 +1,4 @@
-﻿using Template.Application.Common.Interfaces;
-using Template.Infrastructure.Files;
+﻿using Template.Infrastructure.Files;
 using Template.Infrastructure.Identity;
 using Template.Infrastructure.Persistence;
 using Template.Infrastructure.Services;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Template.WebUI.Shared.Common.Interfaces;
 
 namespace Template.Infrastructure
 {
@@ -17,7 +17,7 @@ namespace Template.Infrastructure
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("TemplateDb"));
+                    options.UseInMemoryDatabase("Todo-BlazorDb"));
             }
             else
             {

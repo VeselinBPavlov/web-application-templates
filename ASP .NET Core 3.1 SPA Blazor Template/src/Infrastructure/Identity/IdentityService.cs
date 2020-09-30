@@ -1,9 +1,9 @@
-﻿using Template.Application.Common.Interfaces;
-using Template.Application.Common.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Template.WebUI.Shared.Common.Interfaces;
+using Template.WebUI.Shared.Common.Models;
 
 namespace Template.Infrastructure.Identity
 {

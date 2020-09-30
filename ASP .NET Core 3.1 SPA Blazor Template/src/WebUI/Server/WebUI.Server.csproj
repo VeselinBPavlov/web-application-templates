@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Client\WebUI.Client.csproj" />
     <ProjectReference Include="..\Shared\WebUI.Shared.csproj" />

@@ -1,5 +1,5 @@
-﻿using Template.Application.Common.Interfaces;
-using System;
+﻿using System;
+using Template.WebUI.Shared.Common.Interfaces;
 
 namespace Template.Infrastructure.Services
 {

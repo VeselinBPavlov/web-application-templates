@@ -1,4 +1,4 @@
-﻿using Template.Application.Common.Interfaces;
+﻿using Template.WebUI.Shared.Common.Interfaces;
 using Template.Infrastructure.Identity;
 using Template.Infrastructure.Persistence;
 using MediatR;
