@@ -14,6 +14,7 @@ using Template.WebUI.Server.Filters;
 using Template.WebUI.Server.Services;
 using Template.WebUI.Shared;
 using Template.WebUI.Shared.Common.Interfaces;
+using Blazored.Modal;
 
 namespace Template.WebUI.Server
 {
@@ -40,6 +41,8 @@ namespace Template.WebUI.Server
                 options.Filters.Add(new ApiExceptionFilter()));
 
             services.AddRazorPages();
+
+            services.AddBlazoredModal();
 
             // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options =>

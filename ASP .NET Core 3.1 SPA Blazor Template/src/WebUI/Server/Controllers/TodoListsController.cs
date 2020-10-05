@@ -30,7 +30,8 @@ namespace CleanArchitecture.WebUI.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Create(CreateTodoListCommand command)
         {
-            return await Mediator.Send(command);
+            var result = await Mediator.Send(command);
+            return result;
         }
 
         [HttpPut("{id}")]

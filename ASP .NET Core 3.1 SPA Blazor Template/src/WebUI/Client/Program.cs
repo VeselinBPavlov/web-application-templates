@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Blazored.Modal;
 
 namespace Template.WebUI.Client
 {
@@ -25,6 +26,8 @@ namespace Template.WebUI.Client
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WebUI.ServerAPI"));
 
             builder.Services.AddApiAuthorization();
+
+            builder.Services.AddBlazoredModal();
 
             await builder.Build().RunAsync();
         }

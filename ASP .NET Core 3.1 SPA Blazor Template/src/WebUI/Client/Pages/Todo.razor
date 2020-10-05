@@ -1,63 +1,166 @@
 ﻿@page "/todo"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Template.WebUI.Shared.TodoLists.Queries.GetTodos
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IModalService Modal
 
 <h3>Todo</h3>
 <p>This is a complex todo list component.</p>
 
-<div class="row">
-    <div class="col-sm-4">
-        <div class="clearfix">
-            <h2 class="float-left">Lists</h2>
-            <button class="btn btn-default float-right" title="Add List...">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </button>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <div class="clearfix">
-                    <div class="float-left">
-                        list.title
-                    </div>
-                    <div class="float-right text-right">
-                        <span class="badge badge-light">remainingItems(list)</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="col-sm-8">
-        <div class="clearfix">
-            <h2 class="float-left">selectedList.title</h2>
-            <button id="listOptions" class="btn btn-default float-right" title="List Options...">
-                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-            </button>
-        </div>
-        <ul id="todo-items" class="list-group mb-2">
-            <li class="list-group-item">
-                <div class="d-flex">
-                    <div class="todo-item-checkbox">
-                        <input type="checkbox" />
-                    </div>
-                    <div class="flex-fill">
-                        <input id="itemTitle' + i" type="text"
-                               class="form-control item-input-control" autofocus="autofocus" />
-                        <div class="todo-item-title form-control item-input-control">
-                            <span>item.title</span>
+@if (this.todoLists == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="clearfix">
+                <h2 class="float-left">Lists</h2>
+                <button class="btn btn-default float-right" @onclick="@ShowAddListForm" title="Add List...">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+            </div>
+            <ul class="list-group">
+                @foreach (var todoList in this.todoLists.Lists)
+                {
+                    <li class="list-group-item
+                        @(selectedList.Title == todoList.Title ? "active" : "")"
+                        @onclick="() => selectedList = todoList">
+                        <div class="clearfix">
+                            <div class="float-left">
+                                @todoList.Title
+                            </div>
+                            <div class="float-right text-right">
+                                <span class="badge badge-light">@ReminingItems(todoList)</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="todo-item-commands">
-                        <button class="btn btn-default btn-xs" role="button">
-                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-default">Add Item...</button>
-            </li>
-        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <div class="clearfix">
+                <h2 class="float-left">@selectedList.Title</h2>
+                <button id="listOptions" class="btn btn-default float-right" title="List Options..." @onclick="ShowEditDeleteListForm">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </button>
+            </div>
+            <ul id="todo-items" class="list-group mb-2">
+                @foreach (var todoItem in this.selectedList.Items)
+                {
+                    <li class="list-group-item">
+                        <div class="d-flex">
+                            <div class="todo-item-checkbox">
+                                <input type="checkbox" checked="@todoItem.Done" />
+                            </div>
+                            <div class="flex-fill">
+                                @if (selectedItem != null && todoItem.Id == selectedItem.Id)
+                                {
+                                    <input id="@todoItem.Id" type="text"
+                                           class="form-control item-input-control" autofocus="autofocus" />
+                                }
+                                else
+                                {
+                                    <div class="todo-item-title form-control item-input-control @(todoItem.Done ? "done-todo" : "")">
+                                        <span>@todoItem.Title</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="todo-item-commands">
+                                <button class="btn btn-default btn-xs" role="button">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                }
+                <li class="list-group-item">
+                    <button class="btn btn-default">Add Item...</button>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+}
 
 @code {
+    private TodosVm todoLists;
+    private TodoListDto selectedList;
+    private TodoItemDto selectedItem;
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            todoLists = await Http.GetFromJsonAsync<TodosVm>("api/TodoLists");
+
+            if (todoLists.Lists.Count > 0)
+            {
+                selectedList = todoLists.Lists[0];
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    private int ReminingItems(TodoListDto todoList) => todoList.Items.Where(i => i.Done == false).Count();
+
+    private async Task ShowAddListForm()
+    {
+        var modal = Modal.Show<AddTodoListForm>("Add List");
+        var result = await modal.Result;
+
+        if (result.Data.ToString() == "Success")
+        {
+            await GetTodoLists();
+            SelectTodoList(false);
+            Refresh();
+        }
+    }
+
+    private async Task ShowEditDeleteListForm()
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(TodoListDto), selectedList);
+
+        var modal = Modal.Show<EditDeleteTodoListForm>("List Options", parameters);
+
+        var result = await modal.Result;
+
+        if (result.Data.ToString() == "Success")
+        {
+            await GetTodoLists();
+            SelectTodoList(true);
+            Refresh();
+        }
+    }
+
+    private async Task GetTodoLists()
+    {
+        todoLists = await Http.GetFromJsonAsync<TodosVm>("api/TodoLists");
+    }
+
+    private void SelectTodoList(bool isAscendingOrder)
+    {
+        if (isAscendingOrder)
+        {
+            selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
+        }
+        else
+        {
+            selectedList = todoLists.Lists.OrderByDescending(x => x.Id).FirstOrDefault();
+        }
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
 }

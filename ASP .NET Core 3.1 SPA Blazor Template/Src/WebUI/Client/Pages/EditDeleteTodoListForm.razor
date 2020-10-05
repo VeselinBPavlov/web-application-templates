@@ -1,0 +1,53 @@
+﻿@using Template.WebUI.Shared.TodoLists.Queries.GetTodos
+@using Template.WebUI.Shared.TodoLists.Commands.UpdateTodoList
+
+@inject IModalService Modal
+@inject HttpClient Http
+
+<div class="modal-body">
+    <div class="form-group">
+        <label for="inputListTitle">Title</label>
+        <input type="text" class="form-control" id="inputListTitle" placeholder="List name..." @bind="@TodoListDto.Title" />
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="clearfix">
+        <div class="float-left">
+            <button class="btn btn-default text-danger" @onclick="ShowDeleteListForm">Delete</button>
+        </div>
+        <div class="float-right">
+            <button class="btn btn-default" @onclick="BlazoredModal.Cancel">Cancel</button>
+            <button class="btn btn-primary" @onclick="UpdateList">Update</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter]
+    public TodoListDto TodoListDto { get; set; }
+
+    private async Task UpdateList()
+    {
+        var result = await Http.PutAsJsonAsync($"api/TodoLists/{TodoListDto.Id}", new UpdateTodoListCommand { Id = TodoListDto.Id, Title = TodoListDto.Title });
+
+        await BlazoredModal.Close(ModalResult.Ok("Success"));
+    }
+
+    private async Task ShowDeleteListForm()
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("ListId", TodoListDto.Id);
+
+        var modal = Modal.Show<DeleteConfirm>($"Delete {TodoListDto.Title}", parameters);
+
+        var result = await modal.Result;
+
+        if (result.Data.ToString() == "Success")
+        {
+            await BlazoredModal.Close(ModalResult.Ok("Success"));
+        }
+    }
+}

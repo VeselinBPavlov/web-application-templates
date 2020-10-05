@@ -1,0 +1,31 @@
+﻿@using Template.WebUI.Shared.TodoLists.Commands.CreateTodoList
+
+@inject HttpClient Http
+
+<div class="modal-body">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="List title..." @bind="newListTitle" />
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-right">
+        <button class="btn btn-default" @onclick="BlazoredModal.Cancel">Cancel</button>
+        <button class="btn btn-primary" @onclick="CreateList">Create</button>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    private string newListTitle;
+
+    private async Task CreateList()
+    {
+        var result = await Http.PostAsJsonAsync("api/TodoLists", new CreateTodoListCommand { Title = newListTitle });
+       
+        await BlazoredModal.Close(ModalResult.Ok("Success"));
+
+        newListTitle = string.Empty;
+    }
+}
