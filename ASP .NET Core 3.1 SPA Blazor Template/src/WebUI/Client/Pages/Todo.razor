@@ -59,12 +59,12 @@ else
                     <li class="list-group-item">
                         <div class="d-flex">
                             <div class="todo-item-checkbox">
-                                <input type="checkbox" @bind="@todoItem.Done" @onclick="@(() => UpdateItem(todoItem, true))" />
+                                <input type="checkbox" @bind="@todoItem.Done" @onclick="@(() => UpdateItem(todoItem, !todoItem.Done))" />
                             </div>
                             <div class="flex-fill">
                                 @if (selectedItem != null && todoItem.Id == selectedItem.Id)
                                 {
-                                    <input id="@todoItem.Id" type="text" @bind="todoItem.Title" @onfocusout="@(() => UpdateItem(todoItem, false))"
+                                    <input id="@todoItem.Id" type="text" @bind="todoItem.Title" @onfocusout="@(() => UpdateItem(todoItem, todoItem.Done))"
                                            class="form-control item-input-control" autofocus="autofocus" />
                                 }
                                 else
@@ -119,7 +119,7 @@ else
         var modal = Modal.Show<AddTodoListForm>("Add List");
         var result = await modal.Result;
 
-        if (result.Data.ToString() == GlobalConstants.SUCCESS)
+        if (result.Data != null)
         {
             await GetTodoLists();
             selectedList = todoLists.Lists.OrderByDescending(x => x.Id).FirstOrDefault();
@@ -130,13 +130,13 @@ else
     private async Task ShowEditDeleteListForm()
     {
         var parameters = new ModalParameters();
-        parameters.Add(nameof(TodoListDto), selectedList);
+        parameters.Add("SelectedList", selectedList);
 
         var modal = Modal.Show<EditDeleteTodoListForm>("List Options", parameters);
 
         var result = await modal.Result;
 
-        if (result.Data.ToString().Contains(GlobalConstants.SUCCESS))
+        if (result.Data != null)
         {
             await GetTodoLists();
 
@@ -156,22 +156,22 @@ else
     private async Task ShowItemDetailForm(TodoItemDto todoItem)
     {
         var parameters = new ModalParameters();
-        parameters.Add(nameof(TodoItemDto), todoItem);
-        parameters.Add(nameof(TodosVm), todoLists);
+        parameters.Add("TodoItem", todoItem);
+        parameters.Add("TodoLists", todoLists);
 
         var modal = Modal.Show<EditDeleteTodoItemForm>("Item Details", parameters);
 
         var result = await modal.Result;
 
-        if (result.Data.ToString() == GlobalConstants.SUCCESS)
+        if (result.Data != null)
         {
             await GetTodoLists();
-            selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
+            selectedList = todoLists.Lists.FirstOrDefault(l => l.Id == todoItem.ListId);
             Refresh();
         }
     }
 
-    public async Task UpdateItem(TodoItemDto todoItem, bool isDoneChange, bool isNew = false)
+    public async Task UpdateItem(TodoItemDto todoItem, bool isDone)
     {
         if (todoItem.Id == 0 && todoItem.Title.Trim() != string.Empty)
         {
@@ -183,18 +183,8 @@ else
             await ApiClient.DeleteTodoItem(todoItem.Id);
         }
         else
-        {
-            if (isDoneChange)
-            {
-                todoItem.Done = !todoItem.Done;
-            }
-
-            await ApiClient.UpdateTodoItem(new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = todoItem.Done });
-
-            if (isDoneChange)
-            {
-                selectedItem = null;
-            }
+        {       
+            await ApiClient.UpdateTodoItem(new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = isDone });
         }
 
         await GetTodoLists();

@@ -8,7 +8,7 @@
 <div class="modal-body">
     <div class="form-group">
         <label for="inputListTitle">Title</label>
-        <input type="text" class="form-control" id="inputListTitle" placeholder="List name..." @bind="@TodoListDto.Title" />
+        <input type="text" class="form-control" id="inputListTitle" placeholder="List name..." @bind="@SelectedList.Title" />
     </div>
 </div>
 <div class="modal-footer">
@@ -17,7 +17,7 @@
             <button class="btn btn-default text-danger" @onclick="ShowDeleteListForm">Delete</button>
         </div>
         <div class="float-right">
-            <button class="btn btn-default" @onclick="BlazoredModal.Cancel">Cancel</button>
+            <button class="btn btn-default" @onclick="BlazoredModal.Close">Cancel</button>
             <button class="btn btn-primary" @onclick="UpdateList">Update</button>
         </div>
     </div>
@@ -28,27 +28,27 @@
     BlazoredModalInstance BlazoredModal { get; set; }
 
     [Parameter]
-    public TodoListDto TodoListDto { get; set; }
+    public TodoListDto SelectedList { get; set; }
 
     private async Task UpdateList()
     {
-        await ApiClient.UpdateTodoList(new UpdateTodoListCommand { Id = TodoListDto.Id, Title = TodoListDto.Title });
+        await ApiClient.UpdateTodoList(new UpdateTodoListCommand { Id = SelectedList.Id, Title = SelectedList.Title });
 
-        await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.UPDATE} {GlobalConstants.SUCCESS}"));
+        await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.UPDATE}"));
     }
 
     private async Task ShowDeleteListForm()
     {
         var parameters = new ModalParameters();
-        parameters.Add("ListId", TodoListDto.Id);
+        parameters.Add("ListId", SelectedList.Id);
 
-        var modal = Modal.Show<DeleteConfirm>($"Delete {TodoListDto.Title}", parameters);
+        var modal = Modal.Show<DeleteConfirm>($"Delete {SelectedList.Title}", parameters);
 
         var result = await modal.Result;
 
-        if (result.Data.ToString() == GlobalConstants.SUCCESS)
+        if (result.Data != null)
         {
-            await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.DELETE} {GlobalConstants.SUCCESS}"));
+            await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.DELETE}"));
         }
     }
 }
