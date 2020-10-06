@@ -3,15 +3,16 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Template.WebUI.Shared.Common.Interfaces;
+using Template.WebUI.Shared.Common.Models;
 
 namespace Template.WebUI.Shared.TodoLists.Commands.CreateTodoList
 {
-    public partial class CreateTodoListCommand : IRequest<int>
+    public partial class CreateTodoListCommand : IRequest<ApiResponse<int>>
     {
         public string Title { get; set; }
     }
 
-    public class CreateTodoListCommandHandler : IRequestHandler<CreateTodoListCommand, int>
+    public class CreateTodoListCommandHandler : IRequestHandler<CreateTodoListCommand, ApiResponse<int>>
     {
         private readonly IApplicationDbContext _context;
 
@@ -20,7 +21,7 @@ namespace Template.WebUI.Shared.TodoLists.Commands.CreateTodoList
             _context = context;
         }
 
-        public async Task<int> Handle(CreateTodoListCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<int>> Handle(CreateTodoListCommand request, CancellationToken cancellationToken)
         {
             var entity = new TodoList();
 
@@ -30,7 +31,7 @@ namespace Template.WebUI.Shared.TodoLists.Commands.CreateTodoList
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return entity.Id;
+            return entity.Id.ToApiResponse();
         }
     }
 }

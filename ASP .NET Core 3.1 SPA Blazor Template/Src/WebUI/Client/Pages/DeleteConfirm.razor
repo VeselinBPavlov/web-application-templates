@@ -20,7 +20,7 @@
 
     private async Task DeleteList()
     {
-        await Http.DeleteAsync($"api/TodoLists/{ListId}");
+        await ApiClient.DeleteTodoList(ListId);
 
         await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
     }

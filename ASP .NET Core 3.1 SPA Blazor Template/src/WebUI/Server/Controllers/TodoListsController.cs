@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Template.WebUI.Server.Controllers;
+using Template.WebUI.Shared.Common.Models;
 using Template.WebUI.Shared.TodoLists.Commands.CreateTodoList;
 using Template.WebUI.Shared.TodoLists.Commands.DeleteTodoList;
 using Template.WebUI.Shared.TodoLists.Commands.UpdateTodoList;
@@ -14,9 +15,9 @@ namespace CleanArchitecture.WebUI.Controllers
     public class TodoListsController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<TodosVm>> Get()
+        public async Task<ApiResponse<TodosVm>> Get()
         {
-            return await Mediator.Send(new GetTodosQuery());
+            return await Mediator.Send(new GetTodosQuery());        
         }
 
         [HttpGet("{id}")]
@@ -28,20 +29,14 @@ namespace CleanArchitecture.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create(CreateTodoListCommand command)
+        public async Task<ApiResponse<int>> Create(CreateTodoListCommand command)
         {
-            var result = await Mediator.Send(command);
-            return result;
+            return await Mediator.Send(command);       
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, UpdateTodoListCommand command)
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateTodoListCommand command)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
             await Mediator.Send(command);
 
             return NoContent();

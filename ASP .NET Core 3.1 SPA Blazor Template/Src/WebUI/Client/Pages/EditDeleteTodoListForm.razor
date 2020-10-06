@@ -32,7 +32,7 @@
 
     private async Task UpdateList()
     {
-        var result = await Http.PutAsJsonAsync($"api/TodoLists/{TodoListDto.Id}", new UpdateTodoListCommand { Id = TodoListDto.Id, Title = TodoListDto.Title });
+        await ApiClient.UpdateTodoList(new UpdateTodoListCommand { Id = TodoListDto.Id, Title = TodoListDto.Title });
 
         await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.UPDATE} {GlobalConstants.SUCCESS}"));
     }

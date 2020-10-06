@@ -1,5 +1,6 @@
 ﻿@using Template.WebUI.Shared.TodoLists.Commands.CreateTodoList
 @using Template.WebUI.Shared.Common
+@using Template.WebUI.Shared.Common.Models
 
 @inject HttpClient Http
 
@@ -19,11 +20,14 @@
 @code {
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
 
+    ApiResponse<int> response;
+
     private string newListTitle;
 
     private async Task CreateList()
     {
-        var result = await Http.PostAsJsonAsync("api/TodoLists", new CreateTodoListCommand { Title = newListTitle });
+        this.response = await ApiClient.CreateTodoList(new CreateTodoListCommand { Title = newListTitle });
+        var result = this.response?.Data;
 
         await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
 

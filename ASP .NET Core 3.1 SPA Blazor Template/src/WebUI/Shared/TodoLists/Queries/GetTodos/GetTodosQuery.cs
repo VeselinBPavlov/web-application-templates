@@ -8,14 +8,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Template.WebUI.Shared.Common.Interfaces;
+using Template.WebUI.Shared.Common.Models;
 
 namespace Template.WebUI.Shared.TodoLists.Queries.GetTodos
 {
-    public class GetTodosQuery : IRequest<TodosVm>
+    public class GetTodosQuery : IRequest<ApiResponse<TodosVm>>
     {
     }
 
-    public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
+    public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, ApiResponse<TodosVm>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -26,9 +27,9 @@ namespace Template.WebUI.Shared.TodoLists.Queries.GetTodos
             _mapper = mapper;
         }
 
-        public async Task<TodosVm> Handle(GetTodosQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<TodosVm>> Handle(GetTodosQuery request, CancellationToken cancellationToken)
         {
-            return new TodosVm
+            var result = new TodosVm
             {
                 PriorityLevels = Enum.GetValues(typeof(PriorityLevel))
                     .Cast<PriorityLevel>()
@@ -40,6 +41,8 @@ namespace Template.WebUI.Shared.TodoLists.Queries.GetTodos
                     .OrderBy(t => t.Title)
                     .ToListAsync(cancellationToken)
             };
+
+            return result.ToApiResponse();
         }
     }
 }

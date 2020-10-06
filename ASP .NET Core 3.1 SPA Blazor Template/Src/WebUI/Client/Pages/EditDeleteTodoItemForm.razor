@@ -62,14 +62,14 @@
 
     public async void UpdateTodoItemDetails()
     {
-        await Http.PutAsJsonAsync($"api/TodoItems/UpdateItemDetails", new UpdateTodoItemDetailCommand { Id = TodoItemDto.Id, ListId = TodoItemDto.ListId, Priority = (PriorityLevel)TodoItemDto.Priority, Note = TodoItemDto.Note });
-
+        await ApiClient.UpdateTodoItemDetails(new UpdateTodoItemDetailCommand { Id = TodoItemDto.Id, ListId = TodoItemDto.ListId, Priority = (PriorityLevel)TodoItemDto.Priority, Note = TodoItemDto.Note });
+     
         await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
     }
 
     public async void DeleteTodoItem()
     {
-        await Http.DeleteAsync($"api/TodoItems/{TodoItemDto.Id}");
+        await ApiClient.DeleteTodoItem(TodoItemDto.Id);
 
         await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
     }

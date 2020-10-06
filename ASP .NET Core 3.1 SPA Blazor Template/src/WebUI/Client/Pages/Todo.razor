@@ -5,6 +5,7 @@
 @using Template.WebUI.Shared.TodoItems.Commands.UpdateTodoItem
 @using Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem
 @using Template.WebUI.Shared.Common
+@using Template.WebUI.Shared.Common.Models
 
 @attribute [Authorize]
 @inject HttpClient Http
@@ -96,21 +97,16 @@ else
     private TodosVm todoLists;
     private TodoListDto selectedList;
     private TodoItemDto selectedItem;
+    ApiResponse<TodosVm> response;
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            todoLists = await Http.GetFromJsonAsync<TodosVm>("api/TodoLists");
+        this.response = await ApiClient.GetTodoLists();
+        todoLists = response?.Data;
 
-            if (todoLists.Lists.Count > 0)
-            {
-                selectedList = todoLists.Lists[0];
-            }
-        }
-        catch (AccessTokenNotAvailableException exception)
+        if (todoLists.Lists.Count > 0)
         {
-            exception.Redirect();
+            selectedList = todoLists.Lists[0];
         }
     }
 
@@ -179,12 +175,12 @@ else
     {
         if (todoItem.Id == 0 && todoItem.Title.Trim() != string.Empty)
         {
-            await Http.PostAsJsonAsync($"api/TodoItems", new CreateTodoItemCommand { Title = todoItem.Title, ListId = todoItem.ListId });
+            await ApiClient.CreateTodoItem(new CreateTodoItemCommand { Title = todoItem.Title, ListId = todoItem.ListId });
         }
         else if (todoItem.Id != 0 && todoItem.Title.Trim() == string.Empty)
         {
             selectedList.Items.Remove(todoItem);
-            await Http.DeleteAsync($"api/TodoItems/{todoItem.Id}");
+            await ApiClient.DeleteTodoItem(todoItem.Id);
         }
         else
         {
@@ -193,7 +189,7 @@ else
                 todoItem.Done = !todoItem.Done;
             }
 
-            await Http.PutAsJsonAsync($"api/TodoItems", new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = todoItem.Done });
+            await ApiClient.UpdateTodoItem(new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = todoItem.Done });
 
             if (isDoneChange)
             {
@@ -227,7 +223,8 @@ else
 
     private async Task GetTodoLists()
     {
-        todoLists = await Http.GetFromJsonAsync<TodosVm>("api/TodoLists");
+        this.response = await ApiClient.GetTodoLists();
+        todoLists = this.response?.Data;
     }
 
     private void Refresh()

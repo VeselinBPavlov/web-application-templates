@@ -3,17 +3,18 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Template.WebUI.Shared.Common.Interfaces;
+using Template.WebUI.Shared.Common.Models;
 
 namespace Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem
 {
-    public class CreateTodoItemCommand : IRequest<int>
+    public class CreateTodoItemCommand : IRequest<ApiResponse<int>>
     {
         public int ListId { get; set; }
 
         public string Title { get; set; }
     }
 
-    public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, int>
+    public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, ApiResponse<int>>
     {
         private readonly IApplicationDbContext _context;
 
@@ -22,7 +23,7 @@ namespace Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem
             _context = context;
         }
 
-        public async Task<int> Handle(CreateTodoItemCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<int>> Handle(CreateTodoItemCommand request, CancellationToken cancellationToken)
         {
             var entity = new TodoItem
             {
@@ -35,7 +36,7 @@ namespace Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return entity.Id;
+            return entity.Id.ToApiResponse();
         }
     }
 }

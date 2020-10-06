@@ -21,7 +21,7 @@ namespace Template.WebUI.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create(CreateTodoItemCommand command)
+        public async Task<ApiResponse<int>> Create(CreateTodoItemCommand command)
         {
             return await Mediator.Send(command);
         }
