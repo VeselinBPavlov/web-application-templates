@@ -26,27 +26,17 @@ namespace Template.WebUI.Server.Controllers
             return await Mediator.Send(command);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, UpdateTodoItemCommand command)
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateTodoItemCommand command)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
             await Mediator.Send(command);
 
             return NoContent();
         }
 
         [HttpPut("[action]")]
-        public async Task<ActionResult> UpdateItemDetails(int id, UpdateTodoItemDetailCommand command)
+        public async Task<ActionResult> UpdateItemDetails(UpdateTodoItemDetailCommand command)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
             await Mediator.Send(command);
 
             return NoContent();

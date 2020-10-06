@@ -1,4 +1,6 @@
-﻿@inject HttpClient Http
+﻿@using Template.WebUI.Shared.Common
+
+@inject HttpClient Http
 
 <div class="modal-body">
     <p>All items will be permanently deleted. </p>
@@ -20,6 +22,6 @@
     {
         await Http.DeleteAsync($"api/TodoLists/{ListId}");
 
-        await BlazoredModal.Close(ModalResult.Ok("Success"));
+        await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
     }
 }

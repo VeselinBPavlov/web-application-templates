@@ -2,6 +2,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Template.WebUI.Shared.TodoLists.Queries.GetTodos
+@using Template.WebUI.Shared.TodoItems.Commands.UpdateTodoItem
+@using Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem
+@using Template.WebUI.Shared.Common
+
 @attribute [Authorize]
 @inject HttpClient Http
 @inject IModalService Modal
@@ -54,30 +58,33 @@ else
                     <li class="list-group-item">
                         <div class="d-flex">
                             <div class="todo-item-checkbox">
-                                <input type="checkbox" checked="@todoItem.Done" />
+                                <input type="checkbox" @bind="@todoItem.Done" @onclick="@(() => UpdateItem(todoItem, true))" />
                             </div>
                             <div class="flex-fill">
                                 @if (selectedItem != null && todoItem.Id == selectedItem.Id)
                                 {
-                                    <input id="@todoItem.Id" type="text"
+                                    <input id="@todoItem.Id" type="text" @bind="todoItem.Title" @onfocusout="@(() => UpdateItem(todoItem, false))"
                                            class="form-control item-input-control" autofocus="autofocus" />
                                 }
                                 else
                                 {
-                                    <div class="todo-item-title form-control item-input-control @(todoItem.Done ? "done-todo" : "")">
+                                    <div class="todo-item-title form-control item-input-control @(todoItem.Done ? "done-todo" : "")" @onclick="@(() => selectedItem = todoItem)">
                                         <span>@todoItem.Title</span>
                                     </div>
                                 }
                             </div>
                             <div class="todo-item-commands">
-                                <button class="btn btn-default btn-xs" role="button">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                </button>
+                                @if (todoItem.Id != 0)
+                                {
+                                    <button class="btn btn-default btn-xs" role="button" @onclick="@(() => ShowItemDetailForm(todoItem))">
+                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    </button>
+                                }
                             </div>
                         </div>
                     </li>
                 }
-                <li class="list-group-item">
+                <li class="list-group-item" @onclick="AddItem">
                     <button class="btn btn-default">Add Item...</button>
                 </li>
             </ul>
@@ -107,6 +114,8 @@ else
         }
     }
 
+    #region TodoLists
+
     private int ReminingItems(TodoListDto todoList) => todoList.Items.Where(i => i.Done == false).Count();
 
     private async Task ShowAddListForm()
@@ -114,10 +123,10 @@ else
         var modal = Modal.Show<AddTodoListForm>("Add List");
         var result = await modal.Result;
 
-        if (result.Data.ToString() == "Success")
+        if (result.Data.ToString() == GlobalConstants.SUCCESS)
         {
             await GetTodoLists();
-            SelectTodoList(false);
+            selectedList = todoLists.Lists.OrderByDescending(x => x.Id).FirstOrDefault();
             Refresh();
         }
     }
@@ -131,29 +140,94 @@ else
 
         var result = await modal.Result;
 
-        if (result.Data.ToString() == "Success")
+        if (result.Data.ToString().Contains(GlobalConstants.SUCCESS))
         {
             await GetTodoLists();
-            SelectTodoList(true);
+
+            if (result.Data.ToString().Contains(GlobalConstants.DELETE))
+            {
+                selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
+            }
+
             Refresh();
         }
     }
 
-    private async Task GetTodoLists()
+    #endregion
+
+    #region TodoItems
+
+    private async Task ShowItemDetailForm(TodoItemDto todoItem)
     {
-        todoLists = await Http.GetFromJsonAsync<TodosVm>("api/TodoLists");
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(TodoItemDto), todoItem);
+        parameters.Add(nameof(TodosVm), todoLists);
+
+        var modal = Modal.Show<EditDeleteTodoItemForm>("Item Details", parameters);
+
+        var result = await modal.Result;
+
+        if (result.Data.ToString() == GlobalConstants.SUCCESS)
+        {
+            await GetTodoLists();
+            selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
+            Refresh();
+        }
     }
 
-    private void SelectTodoList(bool isAscendingOrder)
+    public async Task UpdateItem(TodoItemDto todoItem, bool isDoneChange, bool isNew = false)
     {
-        if (isAscendingOrder)
+        if (todoItem.Id == 0 && todoItem.Title.Trim() != string.Empty)
         {
-            selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
+            await Http.PostAsJsonAsync($"api/TodoItems", new CreateTodoItemCommand { Title = todoItem.Title, ListId = todoItem.ListId });
+        }
+        else if (todoItem.Id != 0 && todoItem.Title.Trim() == string.Empty)
+        {
+            selectedList.Items.Remove(todoItem);
+            await Http.DeleteAsync($"api/TodoItems/{todoItem.Id}");
         }
         else
         {
-            selectedList = todoLists.Lists.OrderByDescending(x => x.Id).FirstOrDefault();
+            if (isDoneChange)
+            {
+                todoItem.Done = !todoItem.Done;
+            }
+
+            await Http.PutAsJsonAsync($"api/TodoItems", new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = todoItem.Done });
+
+            if (isDoneChange)
+            {
+                selectedItem = null;
+            }
         }
+
+        await GetTodoLists();
+        selectedList = todoLists.Lists.FirstOrDefault(l => l.Id == todoItem.ListId);
+        Refresh();
+    }
+
+    public void AddItem()
+    {
+        if (!selectedList.Items.Any(i => i.Id == 0))
+        {
+            selectedItem = new TodoItemDto
+            {
+                Id = 0,
+                ListId = selectedList.Id,
+                Priority = 0,
+                Done = false,
+                Title = string.Empty
+            };
+
+            selectedList.Items.Add(selectedItem);
+        }
+    }
+
+    #endregion
+
+    private async Task GetTodoLists()
+    {
+        todoLists = await Http.GetFromJsonAsync<TodosVm>("api/TodoLists");
     }
 
     private void Refresh()

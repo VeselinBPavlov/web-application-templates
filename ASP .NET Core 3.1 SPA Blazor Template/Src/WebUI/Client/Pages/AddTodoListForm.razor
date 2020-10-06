@@ -1,4 +1,5 @@
 ﻿@using Template.WebUI.Shared.TodoLists.Commands.CreateTodoList
+@using Template.WebUI.Shared.Common
 
 @inject HttpClient Http
 
@@ -23,8 +24,8 @@
     private async Task CreateList()
     {
         var result = await Http.PostAsJsonAsync("api/TodoLists", new CreateTodoListCommand { Title = newListTitle });
-       
-        await BlazoredModal.Close(ModalResult.Ok("Success"));
+
+        await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
 
         newListTitle = string.Empty;
     }

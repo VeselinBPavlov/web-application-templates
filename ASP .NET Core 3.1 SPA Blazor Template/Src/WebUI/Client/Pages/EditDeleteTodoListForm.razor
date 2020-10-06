@@ -1,5 +1,6 @@
 ﻿@using Template.WebUI.Shared.TodoLists.Queries.GetTodos
 @using Template.WebUI.Shared.TodoLists.Commands.UpdateTodoList
+@using Template.WebUI.Shared.Common
 
 @inject IModalService Modal
 @inject HttpClient Http
@@ -33,7 +34,7 @@
     {
         var result = await Http.PutAsJsonAsync($"api/TodoLists/{TodoListDto.Id}", new UpdateTodoListCommand { Id = TodoListDto.Id, Title = TodoListDto.Title });
 
-        await BlazoredModal.Close(ModalResult.Ok("Success"));
+        await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.UPDATE} {GlobalConstants.SUCCESS}"));
     }
 
     private async Task ShowDeleteListForm()
@@ -45,9 +46,9 @@
 
         var result = await modal.Result;
 
-        if (result.Data.ToString() == "Success")
+        if (result.Data.ToString() == GlobalConstants.SUCCESS)
         {
-            await BlazoredModal.Close(ModalResult.Ok("Success"));
+            await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.DELETE} {GlobalConstants.SUCCESS}"));
         }
     }
 }
