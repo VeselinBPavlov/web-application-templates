@@ -14,23 +14,16 @@ namespace Template.Application.IntegrationTests.TodoItems.Commands
     public class CreateTodoItemTests : TestBase
     {
         [Test]
-        public void ShouldRequireMinimumFields()
-        {
-            var command = new CreateTodoItemCommand();
-
-            FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<ValidationException>();
-        }
-
-        [Test]
         public async Task ShouldCreateTodoItem()
         {
             var userId = await RunAsDefaultUserAsync();
 
-            var listId = await SendAsync(new CreateTodoListCommand
+            var response = await SendAsync(new CreateTodoListCommand
             {
                 Title = "New List"
             });
+
+            var listId = response.Data;
 
             var command = new CreateTodoItemCommand
             {
@@ -38,7 +31,9 @@ namespace Template.Application.IntegrationTests.TodoItems.Commands
                 Title = "Tasks"
             };
 
-            var itemId = await SendAsync(command);
+            response = await SendAsync(command);
+
+            var itemId = response.Data;
 
             var item = await FindAsync<TodoItem>(itemId);
 

@@ -29,10 +29,12 @@ namespace Template.Application.IntegrationTests.TodoLists.Commands
         [Test]
         public async Task ShouldRequireUniqueTitle()
         {
-            var listId = await SendAsync(new CreateTodoListCommand
+            var response = await SendAsync(new CreateTodoListCommand
             {
                 Title = "New List"
             });
+
+            var listId = response.Data;
 
             await SendAsync(new CreateTodoListCommand
             {
@@ -56,10 +58,12 @@ namespace Template.Application.IntegrationTests.TodoLists.Commands
         {
             var userId = await RunAsDefaultUserAsync();
 
-            var listId = await SendAsync(new CreateTodoListCommand
+            var response = await SendAsync(new CreateTodoListCommand
             {
                 Title = "New List"
             });
+
+            var listId = response.Data;
 
             var command = new UpdateTodoListCommand
             {

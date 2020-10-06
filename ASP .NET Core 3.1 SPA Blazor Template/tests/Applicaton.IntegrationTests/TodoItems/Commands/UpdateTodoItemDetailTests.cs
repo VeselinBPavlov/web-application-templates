@@ -34,16 +34,20 @@ namespace Template.Application.IntegrationTests.TodoItems.Commands
         {
             var userId = await RunAsDefaultUserAsync();
 
-            var listId = await SendAsync(new CreateTodoListCommand
+            var response = await SendAsync(new CreateTodoListCommand
             {
                 Title = "New List"
             });
 
-            var itemId = await SendAsync(new CreateTodoItemCommand
+            var listId = response.Data;
+
+            response = await SendAsync(new CreateTodoItemCommand
             {
                 ListId = listId,
                 Title = "New Item"
             });
+
+            var itemId = response.Data;
 
             var command = new UpdateTodoItemDetailCommand
             {

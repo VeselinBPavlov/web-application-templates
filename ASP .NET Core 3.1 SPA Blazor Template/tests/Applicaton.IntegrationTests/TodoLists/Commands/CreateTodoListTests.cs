@@ -48,7 +48,9 @@ namespace Template.Application.IntegrationTests.TodoLists.Commands
                 Title = "Tasks"
             };
 
-            var id = await SendAsync(command);
+            var response = await SendAsync(command);
+
+            var id = response.Data;
 
             var list = await FindAsync<TodoList>(id);
 
