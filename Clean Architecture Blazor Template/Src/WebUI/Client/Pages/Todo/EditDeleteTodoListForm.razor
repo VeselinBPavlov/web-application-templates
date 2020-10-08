@@ -2,9 +2,6 @@
 @using Template.WebUI.Shared.TodoLists.Commands.UpdateTodoList
 @using Template.WebUI.Shared.Common
 
-@inject IModalService Modal
-@inject HttpClient Http
-
 <div class="modal-body">
     <div class="form-group">
         <label for="inputListTitle">Title</label>
@@ -24,11 +21,9 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    BlazoredModalInstance BlazoredModal { get; set; }
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
 
-    [Parameter]
-    public TodoListDto SelectedList { get; set; }
+    [Parameter] public TodoListDto SelectedList { get; set; }
 
     private async Task UpdateList()
     {

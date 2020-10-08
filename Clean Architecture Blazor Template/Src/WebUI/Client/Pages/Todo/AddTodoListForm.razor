@@ -2,8 +2,6 @@
 @using Template.WebUI.Shared.Common
 @using Template.WebUI.Shared.Common.Models
 
-@inject HttpClient Http
-
 <div class="modal-body">
     <div class="form-group">
         <label for="title">Title</label>
@@ -18,8 +16,7 @@
 </div>
 
 @code {
-    [CascadingParameter] 
-    BlazoredModalInstance BlazoredModal { get; set; }
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
 
     ApiResponse<int> response;
 

@@ -1,7 +1,5 @@
 ﻿@using Template.WebUI.Shared.Common
 
-@inject HttpClient Http
-
 <div class="modal-body">
     <p>All items will be permanently deleted. </p>
 </div>
@@ -13,8 +11,7 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    BlazoredModalInstance BlazoredModal { get; set; }
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
 
     [Parameter] public int ListId { get; set; }
 

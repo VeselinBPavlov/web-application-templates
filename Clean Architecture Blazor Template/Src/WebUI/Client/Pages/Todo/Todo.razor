@@ -1,6 +1,5 @@
 ﻿@page "/todo"
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Template.WebUI.Shared.TodoLists.Queries.GetTodos
 @using Template.WebUI.Shared.TodoItems.Commands.UpdateTodoItem
 @using Template.WebUI.Shared.TodoItems.Commands.CreateTodoItem
@@ -8,8 +7,6 @@
 @using Template.WebUI.Shared.Common.Models
 
 @attribute [Authorize]
-@inject HttpClient Http
-@inject IModalService Modal
 
 <h3>Todo</h3>
 <p>This is a complex todo list component.</p>
@@ -110,8 +107,6 @@ else
         }
     }
 
-    #region TodoLists
-
     private int ReminingItems(TodoListDto todoList) => todoList.Items.Where(i => i.Done == false).Count();
 
     private async Task ShowAddListForm()
@@ -123,7 +118,7 @@ else
         {
             await GetTodoLists();
             selectedList = todoLists.Lists.OrderByDescending(x => x.Id).FirstOrDefault();
-            Refresh();
+            this.StateHasChanged();
         }
     }
 
@@ -144,14 +139,9 @@ else
             {
                 selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
             }
-
-            Refresh();
+            this.StateHasChanged();
         }
     }
-
-    #endregion
-
-    #region TodoItems
 
     private async Task ShowItemDetailForm(TodoItemDto todoItem)
     {
@@ -167,11 +157,11 @@ else
         {
             await GetTodoLists();
             selectedList = todoLists.Lists.FirstOrDefault(l => l.Id == todoItem.ListId);
-            Refresh();
+            this.StateHasChanged();
         }
     }
 
-    public async Task UpdateItem(TodoItemDto todoItem, bool isDone)
+    private async Task UpdateItem(TodoItemDto todoItem, bool isDone)
     {
         if (todoItem.Id == 0 && todoItem.Title.Trim() != string.Empty)
         {
@@ -183,45 +173,28 @@ else
             await ApiClient.DeleteTodoItem(todoItem.Id);
         }
         else
-        {       
+        {
             await ApiClient.UpdateTodoItem(new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = isDone });
         }
 
         await GetTodoLists();
         selectedList = todoLists.Lists.FirstOrDefault(l => l.Id == todoItem.ListId);
-        Refresh();
+        this.StateHasChanged();
     }
 
-    public void AddItem()
+    private void AddItem()
     {
         if (!selectedList.Items.Any(i => i.Id == 0))
         {
-            selectedItem = new TodoItemDto
-            {
-                Id = 0,
-                ListId = selectedList.Id,
-                Priority = 0,
-                Done = false,
-                Title = string.Empty
-            };
+            selectedItem = new TodoItemDto { Id = 0, ListId = selectedList.Id, Priority = 0, Done = false, Title = string.Empty };
 
             selectedList.Items.Add(selectedItem);
         }
     }
 
-    #endregion
-
     private async Task GetTodoLists()
     {
         this.response = await ApiClient.GetTodoLists();
         todoLists = this.response?.Data;
-    }
-
-    private void Refresh()
-    {
-        InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
     }
 }

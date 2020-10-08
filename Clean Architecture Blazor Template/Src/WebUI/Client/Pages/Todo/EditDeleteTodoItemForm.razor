@@ -3,8 +3,6 @@
 @using Template.Domain.Enums
 @using Template.WebUI.Shared.Common
 
-@inject HttpClient Http
-
 <div class="modal-body">
     <div class="form">
         <div class="form-group">
@@ -51,14 +49,11 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    BlazoredModalInstance BlazoredModal { get; set; }
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
 
-    [Parameter]
-    public TodoItemDto TodoItem { get; set; }
+    [Parameter] public TodoItemDto TodoItem { get; set; }
 
-    [Parameter]
-    public TodosVm TodoLists { get; set; }
+    [Parameter] public TodosVm TodoLists { get; set; }
 
     public async void UpdateTodoItemDetails()
     {
