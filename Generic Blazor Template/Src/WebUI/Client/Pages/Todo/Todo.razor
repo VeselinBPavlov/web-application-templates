@@ -1,0 +1,200 @@
+﻿@page "/todo"
+@using Microsoft.AspNetCore.Authorization
+@using WebUI.Shared.TodoLists.Queries.GetTodos
+@using WebUI.Shared.TodoItems.Commands.UpdateTodoItem
+@using WebUI.Shared.TodoItems.Commands.CreateTodoItem
+@using WebUI.Shared.Common
+@using WebUI.Shared.Common.Models
+
+@attribute [Authorize]
+
+<h3>Todo</h3>
+<p>This is a complex todo list component.</p>
+
+@if (this.todoLists == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="clearfix">
+                <h2 class="float-left">Lists</h2>
+                <button class="btn btn-default float-right" @onclick="@ShowAddListForm" title="Add List...">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+            </div>
+            <ul class="list-group">
+                @foreach (var todoList in this.todoLists.Lists)
+                {
+                    <li class="list-group-item
+                        @(selectedList.Title == todoList.Title ? "active" : "")"
+                        @onclick="() => selectedList = todoList">
+                        <div class="clearfix">
+                            <div class="float-left">
+                                @todoList.Title
+                            </div>
+                            <div class="float-right text-right">
+                                <span class="badge badge-light">@ReminingItems(todoList)</span>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <div class="clearfix">
+                <h2 class="float-left">@selectedList.Title</h2>
+                <button id="listOptions" class="btn btn-default float-right" title="List Options..." @onclick="ShowEditDeleteListForm">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </button>
+            </div>
+            <ul id="todo-items" class="list-group mb-2">
+                @foreach (var todoItem in this.selectedList.Items)
+                {
+                    <li class="list-group-item">
+                        <div class="d-flex">
+                            <div class="todo-item-checkbox">
+                                <input type="checkbox" @bind="@todoItem.Done" @onclick="@(() => UpdateItem(todoItem, !todoItem.Done))" />
+                            </div>
+                            <div class="flex-fill">
+                                @if (selectedItem != null && todoItem.Id == selectedItem.Id)
+                                {
+                                    <input id="@todoItem.Id" type="text" @bind="todoItem.Title" @onfocusout="@(() => UpdateItem(todoItem, todoItem.Done))"
+                                           class="form-control item-input-control" autofocus="autofocus" />
+                                }
+                                else
+                                {
+                                    <div class="todo-item-title form-control item-input-control @(todoItem.Done ? "done-todo" : "")" @onclick="@(() => selectedItem = todoItem)">
+                                        <span>@todoItem.Title</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="todo-item-commands">
+                                @if (todoItem.Id != 0)
+                                {
+                                    <button class="btn btn-default btn-xs" role="button" @onclick="@(() => ShowItemDetailForm(todoItem))">
+                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+                <li class="list-group-item" @onclick="AddItem">
+                    <button class="btn btn-default">Add Item...</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+
+@code {
+    private TodosVm todoLists;
+    private TodoListDto selectedList;
+    private TodoItemDto selectedItem;
+    ApiResponse<TodosVm> response;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.response = await ApiClient.GetTodoLists();
+        todoLists = response?.Data;
+
+        if (todoLists.Lists.Count > 0)
+        {
+            selectedList = todoLists.Lists[0];
+        }
+    }
+
+    private int ReminingItems(TodoListDto todoList) => todoList.Items.Where(i => i.Done == false).Count();
+
+    private async Task ShowAddListForm()
+    {
+        var modal = Modal.Show<AddTodoListForm>("Add List");
+        var result = await modal.Result;
+
+        if (result.Data != null)
+        {
+            await GetTodoLists();
+            selectedList = todoLists.Lists.OrderByDescending(x => x.Id).FirstOrDefault();
+            this.StateHasChanged();
+        }
+    }
+
+    private async Task ShowEditDeleteListForm()
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("SelectedList", selectedList);
+
+        var modal = Modal.Show<EditDeleteTodoListForm>("List Options", parameters);
+
+        var result = await modal.Result;
+
+        if (result.Data != null)
+        {
+            await GetTodoLists();
+
+            if (result.Data.ToString().Contains(GlobalConstants.DELETE))
+            {
+                selectedList = todoLists.Lists.OrderBy(x => x.Id).FirstOrDefault();
+            }
+            this.StateHasChanged();
+        }
+    }
+
+    private async Task ShowItemDetailForm(TodoItemDto todoItem)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("TodoItem", todoItem);
+        parameters.Add("TodoLists", todoLists);
+
+        var modal = Modal.Show<EditDeleteTodoItemForm>("Item Details", parameters);
+
+        var result = await modal.Result;
+
+        if (result.Data != null)
+        {
+            await GetTodoLists();
+            selectedList = todoLists.Lists.FirstOrDefault(l => l.Id == todoItem.ListId);
+            this.StateHasChanged();
+        }
+    }
+
+    private async Task UpdateItem(TodoItemDto todoItem, bool isDone)
+    {
+        if (todoItem.Id == 0 && todoItem.Title.Trim() != string.Empty)
+        {
+            await ApiClient.CreateTodoItem(new CreateTodoItemCommand { Title = todoItem.Title, ListId = todoItem.ListId });
+        }
+        else if (todoItem.Id != 0 && todoItem.Title.Trim() == string.Empty)
+        {
+            selectedList.Items.Remove(todoItem);
+            await ApiClient.DeleteTodoItem(todoItem.Id);
+        }
+        else
+        {
+            await ApiClient.UpdateTodoItem(new UpdateTodoItemCommand { Id = todoItem.Id, Title = todoItem.Title, Done = isDone });
+        }
+
+        await GetTodoLists();
+        selectedList = todoLists.Lists.FirstOrDefault(l => l.Id == todoItem.ListId);
+        this.StateHasChanged();
+    }
+
+    private void AddItem()
+    {
+        if (!selectedList.Items.Any(i => i.Id == 0))
+        {
+            selectedItem = new TodoItemDto { Id = 0, ListId = selectedList.Id, Priority = 0, Done = false, Title = string.Empty };
+
+            selectedList.Items.Add(selectedItem);
+        }
+    }
+
+    private async Task GetTodoLists()
+    {
+        this.response = await ApiClient.GetTodoLists();
+        todoLists = this.response?.Data;
+    }
+}

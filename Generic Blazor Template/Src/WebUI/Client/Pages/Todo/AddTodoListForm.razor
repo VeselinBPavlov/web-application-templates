@@ -1,0 +1,32 @@
+﻿@using WebUI.Shared.TodoLists.Commands.CreateTodoList
+@using WebUI.Shared.Common
+@using WebUI.Shared.Common.Models
+
+<div class="modal-body">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="List title..." @bind="title" />
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-right">
+        <button class="btn btn-default" @onclick="BlazoredModal.Close">Cancel</button>
+        <button class="btn btn-primary" @onclick="CreateList">Create</button>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    ApiResponse<int> response;
+
+    private string title;
+
+    private async Task CreateList()
+    {
+        this.response = await ApiClient.CreateTodoList(new CreateTodoListCommand { Title = title });
+        var result = this.response?.Data;
+
+        await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
+    }
+}

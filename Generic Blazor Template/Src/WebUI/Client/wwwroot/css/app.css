@@ -1,0 +1,74 @@
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+a {
+    color: #0366d6;
+}
+
+code {
+    color: #e01a76;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+#listOptions {
+    margin-right: 10px;
+}
+
+#todo-items .item-input-control {
+    border: 0;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+#todo-items .done-todo {
+    text-decoration: line-through;
+}
+
+#todo-items .todo-item-title {
+    padding-top: 8px;
+}
+
+#todo-items .list-group-item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+    #todo-items .list-group-item .btn-xs {
+        padding: 0;
+    }
+
+#todo-items .todo-item-checkbox {
+    padding-top: 8px;
+}
+
+#todo-items .todo-item-commands {
+    padding-top: 4px;
+}
+
+.modal-footer {
+    display: block;
+}

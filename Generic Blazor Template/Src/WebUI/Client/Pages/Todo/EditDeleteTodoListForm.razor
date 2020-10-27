@@ -1,0 +1,49 @@
+﻿@using WebUI.Shared.TodoLists.Queries.GetTodos
+@using WebUI.Shared.TodoLists.Commands.UpdateTodoList
+@using WebUI.Shared.Common
+
+<div class="modal-body">
+    <div class="form-group">
+        <label for="inputListTitle">Title</label>
+        <input type="text" class="form-control" id="inputListTitle" placeholder="List name..." @bind="@SelectedList.Title" />
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="clearfix">
+        <div class="float-left">
+            <button class="btn btn-default text-danger" @onclick="ShowDeleteListForm">Delete</button>
+        </div>
+        <div class="float-right">
+            <button class="btn btn-default" @onclick="BlazoredModal.Close">Cancel</button>
+            <button class="btn btn-primary" @onclick="UpdateList">Update</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public TodoListDto SelectedList { get; set; }
+
+    private async Task UpdateList()
+    {
+        await ApiClient.UpdateTodoList(new UpdateTodoListCommand { Id = SelectedList.Id, Title = SelectedList.Title });
+
+        await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.UPDATE}"));
+    }
+
+    private async Task ShowDeleteListForm()
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("ListId", SelectedList.Id);
+
+        var modal = Modal.Show<DeleteConfirm>($"Delete {SelectedList.Title}", parameters);
+
+        var result = await modal.Result;
+
+        if (result.Data != null)
+        {
+            await BlazoredModal.Close(ModalResult.Ok($"{GlobalConstants.DELETE}"));
+        }
+    }
+}

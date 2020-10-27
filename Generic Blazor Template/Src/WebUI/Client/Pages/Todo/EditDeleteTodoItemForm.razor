@@ -1,0 +1,71 @@
+﻿@using WebUI.Shared.TodoItems.Commands.UpdateTodoItemDetail
+@using WebUI.Shared.TodoLists.Queries.GetTodos
+@using Domain.Enums
+@using WebUI.Shared.Common
+
+<div class="modal-body">
+    <div class="form">
+        <div class="form-group">
+            <label for="list">List</label>
+            <select class="form-control" @bind="TodoItem.ListId">
+                @for (int i = 0; i < TodoLists.Lists.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <option selected="selected" value="@TodoLists.Lists[i].Id">@TodoLists.Lists[i].Title</option>
+                    }
+                    else
+                    {
+                        <option value="@TodoLists.Lists[i].Id">@TodoLists.Lists[i].Title</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <select class="form-control" @bind="@TodoItem.Priority">
+                @for (int i = 0; i < TodoLists.PriorityLevels.Count; i++)
+                {
+                    <option value="@TodoLists.PriorityLevels[i].Value">@TodoLists.PriorityLevels[i].Name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="note">Note</label>
+            <textarea id="note" class="form-control" rows="3" @bind="TodoItem.Note"></textarea>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="clearfix">
+        <div class="float-left">
+            <button class="btn btn-default text-danger" @onclick="DeleteTodoItem">Delete</button>
+        </div>
+        <div class="float-right">
+            <button class="btn btn-default" @onclick="BlazoredModal.Close">Cancel</button>
+            <button class="btn btn-primary" @onclick="UpdateTodoItemDetails">Update</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public TodoItemDto TodoItem { get; set; }
+
+    [Parameter] public TodosVm TodoLists { get; set; }
+
+    public async void UpdateTodoItemDetails()
+    {
+        await ApiClient.UpdateTodoItemDetails(new UpdateTodoItemDetailCommand { Id = TodoItem.Id, ListId = TodoItem.ListId, Priority = (PriorityLevel)TodoItem.Priority, Note = TodoItem.Note });
+     
+        await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
+    }
+
+    public async void DeleteTodoItem()
+    {
+        await ApiClient.DeleteTodoItem(TodoItem.Id);
+
+        await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
+    }
+}

@@ -1,0 +1,24 @@
+﻿@using WebUI.Shared.Common
+
+<div class="modal-body">
+    <p>All items will be permanently deleted. </p>
+</div>
+<div class="modal-footer">
+    <div class="text-right">
+        <button type="button" class="btn btn-default" @onclick="BlazoredModal.Close">Cancel</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteList">Delete</button>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter] public int ListId { get; set; }
+
+    private async Task DeleteList()
+    {
+        await ApiClient.DeleteTodoList(ListId);
+
+        await BlazoredModal.Close(ModalResult.Ok(GlobalConstants.SUCCESS));
+    }
+}
